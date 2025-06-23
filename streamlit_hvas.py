@@ -3,9 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import numpy as np
-import matplotlib.font_manager as fm # Ditambahkan untuk manajemen font
+import matplotlib.font_manager as fm 
 
-# --- Konfigurasi Halaman dan CSS Kustom ---
 st.set_page_config(layout="wide", page_title="Dashboard Progres HVAS", page_icon="✨")
 
 css_content = """
@@ -148,9 +147,8 @@ div[data-testid="stAlert"][data-baseweb="alert"] > div:nth-child(2) { /* Error t
 """
 st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
 
-# --- Memuat Font Kustom untuk Matplotlib (Tanpa Notifikasi Sidebar) ---
-orbitron_font_path = 'Orbitron-Bold.ttf' # Sesuaikan jika nama file atau path berbeda
-roboto_font_path = 'Roboto-Regular.ttf'   # Sesuaikan jika nama file atau path berbeda
+orbitron_font_path = 'Orbitron-Bold.ttf'
+roboto_font_path = 'Roboto-Regular.ttf'
 
 prop_orbitron_title = None
 prop_roboto_label = None
@@ -160,17 +158,15 @@ if os.path.exists(orbitron_font_path) and os.path.exists(roboto_font_path):
         prop_orbitron_title = fm.FontProperties(fname=orbitron_font_path)
         prop_roboto_label = fm.FontProperties(fname=roboto_font_path)
     except RuntimeError:
-        pass # Abaikan error jika font rusak, akan fallback ke default
+        pass
 else:
-    pass # Abaikan jika file tidak ditemukan, akan fallback ke default
+    pass
 
-# Judul Utama Dashboard
 st.markdown(
     "<h1 style='text-align: center;'>Dashboard Progres HVAS</h1>",
     unsafe_allow_html=True
 )
 
-# --- Logika Pencarian File dan Pengolahan Data ---
 csv_filename = None
 search_dirs = ["."]
 if os.path.exists("data") and os.path.isdir("data"):
@@ -190,7 +186,7 @@ for s_dir in search_dirs:
 if csv_filename is None:
     st.error("❌ Tidak ditemukan file CSV yang mengandung kata 'mvp' di nama file (di direktori saat ini atau './data/').")
 else:
-    # st.success(f"✅ File ditemukan: {os.path.basename(csv_filename)}") # Menampilkan nama file saja
+    # st.success(f"✅ File ditemukan: {os.path.basename(csv_filename)}")
 
     try:
         df_input = pd.read_csv(csv_filename)
@@ -239,23 +235,19 @@ else:
                     if weeks_remaining_target > 0 and current_sp_remaining > 0:
                         recommendation_sp_per_week = current_sp_remaining / weeks_remaining_target
 
-                    # --- PENEMPATAN METRIK DALAM GRID 2x2 ---
                     st.markdown("## ")
 
-                    # Baris pertama grid
-                    row1_col1, row1_col2 = st.columns(2, gap="medium") # Anda bisa ganti "medium" dengan "small" atau "large"
+                    row1_col1, row1_col2 = st.columns(2, gap="medium")
                     with row1_col1:
                         st.metric("📦 Total Pekerjaan", f"{int(total_sp_at_start)}")
                     with row1_col2:
                         st.metric("✅ Pekerjaan Selesai", f"{int(sp_completed)}")
 
-                    # Baris kedua grid
-                    row2_col1, row2_col2 = st.columns(2, gap="medium") # Anda bisa ganti "medium" dengan "small" atau "large"
+                    row2_col1, row2_col2 = st.columns(2, gap="medium")
                     with row2_col1:
                         st.metric("⏳ Pekerjaan Tersisa", f"{int(current_sp_remaining)}")
                     with row2_col2:
                         st.metric("📈 Progres Aktual", f"{percentage_completed:.1f}%")
-                    # --- AKHIR PENEMPATAN METRIK DALAM GRID 2x2 ---
 
                     st.markdown("---")
 
@@ -342,4 +334,3 @@ else:
         st.error(f"❌ Terjadi kesalahan nilai saat memproses data: {ve}. Periksa format angka di kolom 'Minggu' atau 'Total Sisa SP'.")
     except Exception as e:
         st.error(f"❌ Terjadi kesalahan umum saat memproses file: {e}")
-        # st.exception(e)http://192.168.68.65:8501/
