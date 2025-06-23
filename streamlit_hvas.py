@@ -257,7 +257,7 @@ else:
                         st.metric("📈 Progres Aktual", f"{percentage_completed:.1f}%")
                     # --- AKHIR PENEMPATAN METRIK DALAM GRID 2x2 ---
 
-                    st.markdown("---")
+                    st.markdown()
 
                     st.markdown("### 📉 Grafik Burndown")
                     fig, ax = plt.subplots(figsize=(12, 6))
